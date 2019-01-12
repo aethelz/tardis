@@ -1,4 +1,4 @@
-tardis:
+pages:
   stage: deploy
   script:
   - mkdir .public
