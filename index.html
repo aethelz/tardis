@@ -43,7 +43,7 @@
                 <table>
                 <tr>
                     <td>
-                        <span>{{ angularSizeMOA }} MOA<span>
+                        <span v-html="angularSizeMOA "> MOA<span>
                     </td>
                     <td>
                         Angular Target Size
@@ -51,7 +51,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <span><b>{{ actualSize }}</b> <span>
+                        <b><span v-html="actualSize"> <span></b>
                                 <select v-model="as_unit">
                                     <option>m</option>
                                     <option>cm</option>
