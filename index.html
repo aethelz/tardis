@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <script src="https://vuejs.org/js/vue.js"></script> -->
+        <script src="https://vuejs.org/js/vue.min.js"></script>
+    </head>
+    <body>
+        <h3>Equivalent Target Size Calculator</h3>
+        <div id="tardis">
+            <table>
+                <tr>
+                    <td>
+                        <input v-model.number="ss" size="3" />
+                        <select v-model="ss_unit">
+                            <option>m</option>
+                            <option>cm</option>
+                            <option>mm</option>
+                        </select>
+                    </td>
+                    <td>
+                        Simulated Target Size
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+            <input v-model.number="sd" size="3" /> m
+                    </td>
+                    <td>
+                        Simulated Distance
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input v-model.number="rd" size="3" /> m
+                    </td>
+                    <td>
+                        Factual Distance
+                    </td>
+                </tr>
+            </table><br>
+                <table>
+                <tr>
+                    <td>
+                        <span>{{ angularSizeMOA }} MOA<span>
+                    </td>
+                    <td>
+                        Angular Target Size
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span><b>{{ actualSize }}</b> <span>
+                                <select v-model="as_unit">
+                                    <option>m</option>
+                                    <option>cm</option>
+                                    <option>mm</option>
+                                </select>
+                    </td>
+                    <td>
+                        Equivalent Target Size
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+        </style>
+
+        <script>
+
+"use strict"
+
+function radtoMOA (rad) {
+  return rad * 3437.747;
+}
+
+var tdis = new Vue({
+  el: '#tardis',
+  data: {
+    ss: 20,
+    sd: 80,
+    rd: 3,
+    ss_unit: 'cm',
+    as_unit: 'mm',
+    table: {
+        'm': 1,
+        'cm': 0.01,
+        'mm': 0.001,
+    },
+  },
+  computed: {
+    ss_n: function () {
+        return this.ss * this.table[this.ss_unit];
+    },
+    angularSize: function () {
+        const aS = 2 * Math.atan(this.ss_n / (2 * this.sd));
+        return aS;
+    },
+    angularSizeMOA: function () {
+        return radtoMOA(this.angularSize).toFixed(2);
+    },
+    actualSize: function () {
+        let actualSize = 2 * this.rd * Math.tan(this.angularSize / 2);
+        return (actualSize / this.table[this.as_unit]).toFixed(3);
+    }
+  },
+  methods: {
+  },
+});
+        </script>
+    </body>
+</html>
