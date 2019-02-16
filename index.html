@@ -29,7 +29,7 @@
   </table><br>
     <table>
     <tr>
-      <td><span>{{angularSizeMOA}} MOA</span>
+      <td><span>{{angularSizeMOA}}</span><span title="Minute of Angle"> MOA</span>
       <td id="ats">Angular Target Size
     <tr>
       <td><span class="highlight" v-html="actualSize"></span>
@@ -55,7 +55,7 @@
   /* Large devices (large desktops, 1200px and up) */
   @media (min-width: 1200px) {
     body {
-      font-size: 3em;
+      font-size: 2em;
     }
   }
   body {
@@ -94,8 +94,10 @@
     display: flex;
   }
   #lang-cont span {
-    margin: 0.2em 0.5em;
+    color: grey;
     cursor: pointer;
+    font-size: .8em;
+    margin: 0.2em 0.5em;
   }
 </style>
 
@@ -133,8 +135,9 @@
         RU: 'Эквивалентный размер мишени',
       },
     };
-    const lang = e.path.find(x => x.tagName === "SPAN")
-      ? e.path.find(x => x.tagName === "SPAN").innerHTML
+    const path = e.path || (e.composedPath && e.composedPath());
+    const lang = path.find(x => x.tagName === "SPAN")
+      ? path.find(x => x.tagName === "SPAN").innerHTML
       : "EN";
     Object.keys(dic).forEach(w => {
       document.getElementById(w).innerHTML = dic[w][lang];
