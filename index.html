@@ -13,7 +13,7 @@
   <table>
     <tr>
       <td>
-        <input type="number" v-model.number="ss">
+        <input type="number" min="0" v-model.number="ss">
         <select v-model="ss_unit">
           <option>m
           <option>cm
@@ -21,10 +21,10 @@
         </select>
       <td id="sts">Simulated Target Size
     <tr>
-      <td><input type="number" v-model.number="sd"> m
+      <td><input type="number" min="0" v-model.number="sd"> m
       <td id="sd">Simulated Distance
     <tr>
-      <td><input type="number" v-model.number="rd"> m
+      <td><input type="number" min="0" v-model.number="rd"> m
       <td id="fd">Factual Distance
   </table><br>
     <table>
