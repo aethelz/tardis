@@ -1,120 +1,176 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Equivalent Target Size Calculator</title>
-        <meta charset="UTF-8">
-        <meta name="description" content="Equivalent Target Size Calculator">
-        <meta name="keywords" content="target,size,calculator,moa">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- <script src="https://vuejs.org/js/vue.js"></script> -->
-        <script src="https://vuejs.org/js/vue.min.js"></script>
-    </head>
-    <body>
-        <h3>Equivalent Target Size Calculator</h3>
-        <div id="tardis">
-            <table>
-                <tr>
-                    <td>
-                        <input v-model.number="ss" size="3" />
-                        <select v-model="ss_unit">
-                            <option>m</option>
-                            <option>cm</option>
-                            <option>mm</option>
-                        </select>
-                    </td>
-                    <td>
-                        Simulated Target Size
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-            <input v-model.number="sd" size="3" /> m
-                    </td>
-                    <td>
-                        Simulated Distance
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input v-model.number="rd" size="3" /> m
-                    </td>
-                    <td>
-                        Factual Distance
-                    </td>
-                </tr>
-            </table><br>
-                <table>
-                <tr>
-                    <td>
-                        <span>{{ angularSizeMOA}} MOA<span>
-                    </td>
-                    <td>
-                        Angular Target Size
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <b><span v-html="actualSize"> <span></b>
-                                <select v-model="as_unit">
-                                    <option>m</option>
-                                    <option>cm</option>
-                                    <option>mm</option>
-                                </select>
-                    </td>
-                    <td>
-                        Equivalent Target Size
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <style>
-table, th, td {
-    border: 1px solid black;
+<title>Equivalent Target Size Calculator</title>
+<meta charset="UTF-8">
+<meta name="description" content="Equivalent Target Size Calculator">
+<meta name="keywords" content="target,size,calculator,moa">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://vuejs.org/js/vue.min.js"></script>
+<div id="lang-cont">
+  <span>RU</span><span>EN</span><div></div>
+</div>
+<h3 id="etsc">Equivalent Target Size Calculator</h3>
+<div id="tardis">
+  <table>
+    <tr>
+      <td>
+        <input type="number" v-model.number="ss">
+        <select v-model="ss_unit">
+          <option>m
+          <option>cm
+          <option>mm
+        </select>
+      <td id="sts">Simulated Target Size
+    <tr>
+      <td><input type="number" v-model.number="sd"> m
+      <td id="sd">Simulated Distance
+    <tr>
+      <td><input type="number" v-model.number="rd"> m
+      <td id="fd">Factual Distance
+  </table><br>
+    <table>
+    <tr>
+      <td><span>{{angularSizeMOA}} MOA</span>
+      <td id="ats">Angular Target Size
+    <tr>
+      <td><span class="highlight" v-html="actualSize"></span>
+        <select v-model="as_unit">
+          <option>m
+          <option>cm
+          <option>mm
+        </select>
+      <td id="ets">Equivalent Target Size
+  </table>
+  <div class="smallfont" align="center">
+    Емаil для замечаний: testerowtes at яндекс точка ком
+  </div>
+</div>
+
+<style>
+  /* Medium devices (desktops, 992px and up) */
+  @media (min-width: 768px) {
+    body {
+      font-size: xx-large;
+    }
+  }
+  /* Large devices (large desktops, 1200px and up) */
+  @media (min-width: 1200px) {
+    body {
+      font-size: 3em;
+    }
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+  #tardis {
+    margin: auto;
+  }
+  h3 {
+    margin: .5em auto;
+    text-align: center;
+  }
+  table, th, td {
     border-collapse: collapse;
-}
-        </style>
+    border: .05em solid black;
+    margin: auto;
+    padding: .1em;
+  }
+  select {
+    font-size: 1em;
+  }
+  .highlight {
+    font-weight: bold;
+  }
+  input[type=number] {
+    width: 3.5em;
+    font-size: 1em;
+  }
+  .smallfont {
+    margin: 2em auto;
+    color: grey;
+    font-size: .5em;
+  }
+  #lang-cont {
+    display: flex;
+  }
+  #lang-cont span {
+    margin: 0.2em 0.5em;
+    cursor: pointer;
+  }
+</style>
 
-        <script>
+<script>
+  "use strict"
 
-"use strict"
+  function radtoMOA(rad) {
+    return rad * 3437.747;
+  }
 
-function radtoMOA (rad) {
-  return rad * 3437.747;
-}
+  function localize(e) {
+    const dic = {
+      'etsc': {
+        EN: 'Equivalent Target Size Calculator',
+        RU: 'Калькулятор эквивалентной мишени',
+      },
+      'sts': {
+        EN: 'Simulated Target Size',
+        RU: 'Симулируемый размер мишени',
+      },
+      'sd': {
+        EN: 'Simulated Distance',
+        RU: 'Симулируемая дистанция',
+      },
+      'fd': {
+        EN: 'Factual Distance',
+        RU: 'Фактическая дистанция',
+      },
+      'ats': {
+        EN: 'Angular Target Size',
+        RU: 'Угловой размер мишени',
+      },
+      'ets': {
+        EN: 'Equivalent Target Size',
+        RU: 'Эквивалентный размер мишени',
+      },
+    };
+    const lang = e.path.find(x => x.tagName === "SPAN")
+      ? e.path.find(x => x.tagName === "SPAN").innerHTML
+      : "EN";
+    Object.keys(dic).forEach(w => {
+      document.getElementById(w).innerHTML = dic[w][lang];
+    })
+  }
 
-var tdis = new Vue({
-  el: '#tardis',
-  data: {
-    ss: 20,
-    sd: 80,
-    rd: 3,
-    ss_unit: 'cm',
-    as_unit: 'mm',
-    table: {
+  var tdis = new Vue({
+    el: '#tardis',
+    data: {
+      ss: 20,
+      sd: 80,
+      rd: 3,
+      ss_unit: 'cm',
+      as_unit: 'mm',
+      table: {
         'm': 1,
         'cm': 0.01,
         'mm': 0.001,
+      },
     },
-  },
-  computed: {
-    ss_n: function () {
+    computed: {
+      ss_n: function () {
         return this.ss * this.table[this.ss_unit];
-    },
-    angularSize: function () {
+      },
+      angularSize: function () {
         const aS = 2 * Math.atan(this.ss_n / (2 * this.sd));
         return aS;
-    },
-    angularSizeMOA: function () {
+      },
+      angularSizeMOA: function () {
         return radtoMOA(this.angularSize).toFixed(2);
-    },
-    actualSize: function () {
-        let actualSize = 2 * this.rd * Math.tan(this.angularSize / 2);
+      },
+      actualSize: function () {
+        const actualSize = 2 * this.rd * Math.tan(this.angularSize / 2);
         return (actualSize / this.table[this.as_unit]).toFixed(3);
-    }
-  },
-  methods: {
-  },
-});
-        </script>
-    </body>
-</html>
+      }
+    },
+  });
+  document.getElementById('lang-cont').addEventListener('click', localize, false);
+</script>
